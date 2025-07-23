@@ -1,0 +1,46 @@
+﻿@model CarritoC.Models.Persona
+
+@{
+    ViewData["Title"] = "Detalle de Persona";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-primary mb-4">👤 Detalle de Persona</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-3 text-muted">👤 Usuario</dt>
+                <dd class="col-sm-9">@Model.UserName</dd>
+
+                <dt class="col-sm-3 text-muted">🧾 Nombre</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3 text-muted">🧾 Apellido</dt>
+                <dd class="col-sm-9">@Model.Apellido</dd>
+
+                <dt class="col-sm-3 text-muted">🆔 DNI</dt>
+                <dd class="col-sm-9">@Model.DNI</dd>
+
+                <dt class="col-sm-3 text-muted">📞 Teléfono</dt>
+                <dd class="col-sm-9">@Model.Telefono</dd>
+
+                <dt class="col-sm-3 text-muted">🏠 Dirección</dt>
+                <dd class="col-sm-9">@Model.Direccion</dd>
+
+                <dt class="col-sm-3 text-muted">📅 Fecha Alta</dt>
+                <dd class="col-sm-9">
+                    @Model.FechaAlta.ToString("dd/MM/yyyy")
+                </dd>
+
+                <dt class="col-sm-3 text-muted">📧 Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+    
+        <a asp-action="Index" class="btn btn-outline-secondary">🔙 Volver al Listado</a>
+    </div>
+</div>

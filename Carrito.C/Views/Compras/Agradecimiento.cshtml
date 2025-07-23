@@ -1,0 +1,27 @@
+﻿@model CarritoC.Models.Sucursal
+
+@{
+    ViewData["Title"] = "Gracias por tu compra";
+}
+
+<div class="container mt-5 text-center">
+    <h2 class="text-success">🎉 ¡Gracias por tu compra!</h2>
+    <p class="lead">Tu pedido ha sido procesado exitosamente.</p>
+
+    @if (ViewBag.CodigoCompra != null)
+    {
+        <p class="fw-bold">🧾 Código de compra: #@ViewBag.CodigoCompra</p>
+    }
+
+    <div class="mt-4">
+        <h5 class="text-primary">📍 Sucursal donde retirarás tu pedido:</h5>
+        <p class="fw-bold">@Model.Nombre</p>
+        <p>@Model.Direccion</p>
+        <p>📞 @Model.Telefono</p>
+        <p>✉ @Model.Email</p>
+    </div>
+
+    <a asp-controller="Compras" asp-action="Index" class="btn btn-primary mt-3">
+        📦 Ver historial de compras
+    </a>
+</div>

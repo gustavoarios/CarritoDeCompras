@@ -1,0 +1,59 @@
+﻿@model CarritoC.Models.CarritoItem
+
+@{
+    ViewData["Title"] = "Editar Ítem del Carrito";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0">🛍️ Editar Ítem del Carrito</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">💵 Precio Unitario</label>
+                            <div class="form-control bg-light" readonly>
+                                @string.Format("$ {0:N2}", Model.ValorUnitario)
+                            </div>
+                            <!-- Envío real del número como hidden -->
+                            <input type="hidden" asp-for="ValorUnitario" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Cantidad" class="form-label">
+                                <i class="bi bi-hash"></i> Cantidad
+                            </label>
+
+                            <input asp-for="Cantidad" class="form-control" type="number" placeholder="Ingrese la cantidad" />
+
+                            <span asp-validation-for="Cantidad" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" asp-for="CarritoId" />
+                        <input type="hidden" asp-for="ProductoId" />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                🔙 Volver al Carrito
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                💾 Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

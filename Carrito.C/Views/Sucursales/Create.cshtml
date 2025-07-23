@@ -1,0 +1,77 @@
+﻿@model CarritoC.Models.Sucursal
+
+@{
+    ViewData["Title"] = "Crear Sucursal";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-building me-2"></i>
+                    <h4 class="mb-0">Nueva Sucursal</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">
+                                <i class="bi bi-type"></i> Nombre
+                            </label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Sucursal Norte" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Direccion" class="form-label">
+                                <i class="bi bi-geo-alt"></i> Dirección
+                            </label>
+                            <input asp-for="Direccion" class="form-control" placeholder="Ej: Av. Siempre Viva 123" />
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Telefono" class="form-label">
+                                <i class="bi bi-telephone"></i> Teléfono
+                            </label>
+                            <input asp-for="Telefono" class="form-control" placeholder="Ej: 1122334455" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">
+                                <i class="bi bi-envelope"></i> Email
+                            </label>
+                            <input asp-for="Email" class="form-control" placeholder="Ej: contacto@sucursal.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" asp-for="Activa" />
+                            <label class="form-check-label" asp-for="Activa">
+                                <i class="bi bi-toggle-on"></i> Activa
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Crear Sucursal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,211 @@
+﻿@model IEnumerable<CarritoC.Models.CarritoItem>
+
+@{
+    ViewData["Title"] = "Carrito de Productos";
+    var total = Model.Sum(item => item.ValorUnitario * item.Cantidad);
+    var error = TempData["Error"] as string;
+    var clienteSeleccionado = Context.Request.Query["clienteId"].ToString();
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Carrito de Compras</h2>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("ClienteRol"))
+    {
+        if (string.IsNullOrEmpty(error))
+        {
+            <p>
+                <a asp-action="Index" asp-controller="Productos" class="btn btn-success">➕ Agregar Productos</a>
+            </p>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                <strong>Atención:</strong> @error
+                <div class="mt-2">
+                    <a href="@Url.Action("Index", "Carritos")" class="btn btn-primary">Ir a mis Carritos</a>
+                </div>
+            </div>
+        }
+    }
+    else if (User.IsInRole("EmpleadoRol"))
+    {
+        <h4>Realizar compra para un cliente</h4>
+        <form method="get" asp-action="Index">
+            <div class="mb-3">
+                <select name="clienteId" class="form-select" asp-items="ViewBag.Clientes" required onchange="this.form.submit()">
+                    <option value="">Seleccione un cliente</option>
+                </select>
+            </div>
+        </form>
+        <form asp-controller="CarritoItems" asp-action="Create" method="get">
+            <input type="hidden" name="clienteId" value="@clienteSeleccionado" />
+            <button type="submit" class="btn btn-primary mt-2">➕ Agregar producto</button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            ⚠ Debe iniciar sesión como cliente o empleado para acceder al carrito.
+        </div>
+    }
+
+    <table class="table table-bordered table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Producto</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Producto.Nombre</td>
+                    <td>@string.Format("${0:N2}", item.ValorUnitario)</td>
+                    <td class="text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center">
+                            <button type="button" class="btn btn-sm btn-outline-secondary btn-restar"
+                                    data-carritoid="@item.CarritoId"
+                                    data-productoid="@item.ProductoId"
+                                    data-clienteid="@clienteSeleccionado"
+                                    @(item.Cantidad <= 1 ? "disabled" : "")>
+                                -
+                            </button>
+
+                            <span class="mx-2 cantidad" data-productoid="@item.ProductoId">@item.Cantidad</span>
+
+                            <button type="button" class="btn btn-sm btn-outline-secondary btn-sumar"
+                                    data-carritoid="@item.CarritoId"
+                                    data-productoid="@item.ProductoId"
+                                    data-clienteid="@clienteSeleccionado">
+                                +
+                            </button>
+                        </div>
+                    </td>
+                    <td class="subtotal" data-productoid="@item.ProductoId">@string.Format("${0:N2}", item.ValorUnitario * item.Cantidad)</td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-CarritoId="@item.CarritoId" asp-route-ProductoId="@item.ProductoId" class="btn btn-sm btn-primary">✏</a>
+                        <a asp-action="Details" asp-route-CarritoId="@item.CarritoId" asp-route-ProductoId="@item.ProductoId" class="btn btn-sm btn-info">🔍</a>
+                        <a asp-action="Delete" asp-route-CarritoId="@item.CarritoId" asp-route-ProductoId="@item.ProductoId" class="btn btn-sm btn-danger">🗑</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (User.IsInRole("ClienteRol"))
+    {
+        <div class="text-end mt-4">
+            <h4>Total del carrito: <strong id="totalCarrito">@string.Format("${0:N2}", total)</strong></h4>
+
+            @if (ViewData["CarritoActivo"] != null && (bool)ViewData["CarritoActivo"])
+            {
+                <form asp-action="ConfirmarCompra" asp-controller="Compras" method="get">
+                    <button class="btn btn-primary" type="submit">🛒 Comprar</button>
+                </form>
+            }
+            else
+            {
+                <p class="text-warning">⚠ No hay un carrito activo para realizar la compra.</p>
+            }
+
+            <form asp-action="VaciarCarrito" method="post" class="d-inline ms-2">
+                <button type="submit" class="btn btn-danger">🧹 Vaciar Carrito</button>
+            </form>
+        </div>
+    }
+
+    @if (User.IsInRole("EmpleadoRol"))
+    {
+        <div class="text-end mt-5">
+            <form asp-action="ConfirmarCompra" asp-controller="Compras" method="get" class="mt-2">
+                <input type="hidden" name="clienteId" value="@clienteSeleccionado" />
+                <button class="btn btn-success" type="submit">🛒 Comprar</button>
+            </form>
+
+            <form asp-action="VaciarCarrito" method="post" class="d-inline ms-2 mt-2">
+                <input type="hidden" name="clienteId" value="@clienteSeleccionado" />
+                <button type="submit" class="btn btn-danger">🧹 Vaciar Carrito</button>
+            </form>
+        </div>
+    }
+</div>
+
+<!-- Contenedor para mostrar alertas de stock -->
+<div id="alertStock" class="alert alert-warning fixed-top mx-auto mt-3" style="max-width: 400px; display:none; z-index:1050;"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alertStock = document.getElementById('alertStock');
+
+            function mostrarAlerta(msg) {
+                alertStock.textContent = msg;
+                alertStock.style.display = 'block';
+                setTimeout(() => {
+                    alertStock.style.display = 'none';
+                }, 3000);
+            }
+
+            document.querySelectorAll('.btn-sumar, .btn-restar').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const esSuma = btn.classList.contains('btn-sumar');
+                    const carritoId = btn.dataset.carritoid;
+                    const productoId = btn.dataset.productoid;
+                    const clienteId = btn.dataset.clienteid;
+                    const url = esSuma ? '/CarritoItems/IncrementarCantidad' : '/CarritoItems/ReducirCantidad';
+
+                    const formData = new FormData();
+                    formData.append('carritoId', carritoId);
+                    formData.append('productoId', productoId);
+                    if (clienteId) formData.append('clienteId', clienteId);
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+
+                            if (result.ok === false) {
+                                mostrarAlerta(result.mensaje || "No se pudo actualizar.");
+                                return;
+                            }
+
+                            // Actualizar cantidad
+                            const cantidadSpan = document.querySelector(`.cantidad[data-productoid='${productoId}']`);
+                            cantidadSpan.textContent = result.nuevaCantidad;
+
+                            // Actualizar subtotal
+                            const subtotalTd = document.querySelector(`.subtotal[data-productoid='${productoId}']`);
+                            subtotalTd.textContent = result.subtotalActualizado;
+
+                            // Actualizar total
+                            const totalElement = document.getElementById('totalCarrito');
+                            totalElement.textContent = result.totalActualizado;
+
+                            // Deshabilitar botón restar si la cantidad llega a 1
+                            const btnRestar = document.querySelector(`.btn-restar[data-productoid='${productoId}']`);
+                            if (result.nuevaCantidad <= 1) {
+                                btnRestar.setAttribute('disabled', 'true');
+                            } else {
+                                btnRestar.removeAttribute('disabled');
+                            }
+                        } else {
+                            mostrarAlerta("Error al actualizar el carrito.");
+                        }
+                    } catch (err) {
+                        console.error("Error en la solicitud:", err);
+                        mostrarAlerta("Error en la comunicación con el servidor.");
+                    }
+                });
+            });
+        });
+    </script>
+}

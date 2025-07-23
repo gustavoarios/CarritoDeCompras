@@ -1,0 +1,38 @@
+﻿@model CarritoC.Models.StockItem
+
+@{
+    ViewData["Title"] = "Agregar producto al stock";
+    var sucursalId = ViewData["SucursalId"];
+    var productos = (SelectList)ViewBag.Productos;
+}
+
+<div class="container mt-4">
+    <h3>Agregar producto al stock de la sucursal <strong>@ViewData["SucursalNombre"]</strong></h3>
+
+    <form asp-action="GuardarStock" method="post">
+        <input type="hidden" name="SucursalId" value="@sucursalId" />
+
+        <div class="mb-3">
+            <label asp-for="ProductoId" class="form-label">Producto</label>
+            <select asp-for="ProductoId" class="form-control" asp-items="productos">
+                <option value="">-- Seleccionar producto --</option>
+            </select>
+            <span asp-validation-for="ProductoId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Cantidad" class="form-label">Cantidad</label>
+            <input asp-for="Cantidad" class="form-control" />
+            <span asp-validation-for="Cantidad" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Agregar</button>
+        <a asp-action="Details" asp-route-id="@sucursalId" class="btn btn-secondary ms-2">Volver</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

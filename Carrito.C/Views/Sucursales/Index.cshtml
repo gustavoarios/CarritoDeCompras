@@ -1,0 +1,80 @@
+﻿@model IEnumerable<CarritoC.Models.Sucursal>
+
+@{
+    ViewData["Title"] = "Sucursales";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Listado de Sucursales</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if(User.IsInRole("EmpleadoRol")){
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-success">➕ Crear nueva sucursal</a>
+		</div>
+	}
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                <th>@Html.DisplayNameFor(model => model.Direccion)</th>
+                <th>@Html.DisplayNameFor(model => model.Telefono)</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                 @if (User.IsInRole("EmpleadoRol")) {
+                <th>Estado</th>
+                 }
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var rowClass = item.Activa ? "" : "table-secondary text-muted";
+                <tr class="@rowClass">
+                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    @if (User.IsInRole("EmpleadoRol")) {
+                    <td>
+                        <span class="badge @(item.Activa ? "bg-success" : "bg-secondary")">
+                            @(item.Activa ? "Activa" : "Deshabilitada")
+                        </span>
+						</td>
+					}
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">🔍 Detalle</a>
+
+                    @if (User.IsInRole("EmpleadoRol"))
+                    {
+                        @if (item.Activa)
+                        {
+                        
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">🗑 Deshabilitar</button>
+                        </form>
+                        <a asp-action="AgregarStock" asp-route-sucursalId="@item.Id" class="btn btn-sm btn-warning">📦 Agregar Stock</a>
+                        }
+                        else
+                        {
+                        <form asp-action="Reactivar" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">✔ Reactivar</button>
+                        </form>
+                        }
+                    }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>

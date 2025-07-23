@@ -1,0 +1,98 @@
+﻿@model CarritoC.Models.Producto
+
+@{
+    ViewData["Title"] = "Detalle del Producto";
+    var estiloImagen = Model.Activo ? "" : "opacity-50";
+    var estiloFondo = Model.Activo ? "" : "background-color: #d0d0d0;";
+    bool hayStock = ViewBag.HayStock ?? false;
+}
+
+<div class="container my-5">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="row g-0">
+            <!-- Imagen del producto -->
+            <div class="col-lg-5 d-flex align-items-center justify-content-center p-4" style="@estiloFondo">
+                @if (!string.IsNullOrEmpty(Model.Imagen))
+                {
+                    <img src="~/images/@Model.Imagen"
+                         alt="Imagen de @Model.Nombre"
+                         class="img-fluid rounded-3 border @estiloImagen"
+                         style="max-height: 400px; object-fit: contain;" />
+                }
+                else
+                {
+                    <div class="text-center text-muted">📷 Sin imagen disponible</div>
+                }
+            </div>
+
+            <!-- Detalles del producto -->
+            <div class="col-lg-7 p-5" style="@estiloFondo">
+                <h2 class="fw-bold text-dark">@Model.Nombre</h2>
+                <p class="text-secondary mb-3">@Model.Descripcion</p>
+
+                <div class="mb-3">
+                    <span class="badge rounded-pill @((Model.Activo ? "bg-success" : "bg-danger")) fs-6 px-3 py-2">
+                        @(Model.Activo ? "🟢 Disponible" : "🔴 Pausado")
+                    </span>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="text-primary fw-bold">💲 @string.Format("{0:N2}", Model.PrecioVigente)</h4>
+                </div>
+
+                <div class="mb-3">
+                    <strong class="text-muted">🏷️ Categoría:</strong>
+                    <span class="ms-2">@Model.Categoria?.Nombre</span>
+                </div>
+
+                <div class="mb-3">
+                    <strong class="text-muted">🏢 Marca:</strong>
+                    <span class="ms-2">@Model.Marca?.Nombre</span>
+                </div>
+
+                @if (ViewBag.StockPorSucursal != null)
+{
+                <h4>Stock disponible en sucursales:</h4>
+                <ul>
+                    @foreach (var stock in ViewBag.StockPorSucursal)
+        {
+                    <li>@stock.Sucursal.Nombre - @stock.Cantidad unidades</li>
+        }
+                </ul>
+}
+                <div class="mt-4 d-flex flex-wrap gap-3">
+                    @if (User.IsInRole("ClienteRol"))
+                    {
+                        if (Model.Activo && hayStock)
+                        {
+                    <a asp-controller="CarritoItems"
+                       asp-action="Create"
+                       asp-route-productoId="@Model.Id"
+                       class="btn btn-lg btn-success px-4 shadow-sm">
+                        🛒 Agregar al Carrito
+                    </a>
+                        }
+                        else if (Model.Activo && !hayStock)
+                        {
+                    <span class="text-danger fs-6 align-self-center">🚫 Sin stock disponible</span>
+                        }
+                    }
+
+                    @if (User.IsInRole("EmpleadoRol"))
+                    {
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-outline-primary btn-lg px-4">
+                        ✏️ Editar
+                    </a>
+                    }
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary btn-lg px-4">
+                        🔙 Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<CarritoC.Models.StockItem>
+
+    @{
+    ViewData["Title"] = "Gestión de Stock";
+    }
+
+    <div class="container mt-4">
+        <h2 class="mb-4">📦 Gestión de Stock</h2>
+
+        @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+        @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>🛍 Producto</th>
+                    <th>🏬 Sucursal</th>
+                    <th>📦 Cantidad</th>
+                    <th class="text-center">⚙️ Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Producto?.Nombre</td>
+                    <td>@item.Sucursal?.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-productoId="@item.ProductoId" asp-route-sucursalId="@item.SucursalId" class="btn btn-sm btn-primary">
+                            ✏️ Editar
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>

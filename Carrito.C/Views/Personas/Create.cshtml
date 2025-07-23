@@ -1,0 +1,79 @@
+﻿@model CarritoC.Models.Persona
+
+@{
+    ViewData["Title"] = "Crear Persona";
+}
+
+<h1>Crear Persona</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- UserName -->
+            <div class="form-group mb-3">
+                <label asp-for="UserName" class="control-label">Correo Electrónico (Usuario)</label>
+                <input asp-for="UserName" class="form-control" id="userNameInput" type="text" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <!-- Nombre -->
+            <div class="form-group mb-3">
+                <label asp-for="Nombre" class="control-label">Nombre</label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <!-- Apellido -->
+            <div class="form-group mb-3">
+                <label asp-for="Apellido" class="control-label">Apellido</label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+
+            <!-- DNI -->
+            <div class="form-group mb-3">
+                <label asp-for="DNI" class="control-label">DNI</label>
+                <input asp-for="DNI" class="form-control" />
+                <span asp-validation-for="DNI" class="text-danger"></span>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="form-group mb-3">
+                <label asp-for="Telefono" class="control-label">Teléfono</label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+
+            <!-- Dirección -->
+            <div class="form-group mb-3">
+                <label asp-for="Direccion" class="control-label">Dirección</label>
+                <input asp-for="Direccion" class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label">Correo Electrónico</label>
+                <input asp-for="Email" class="form-control" id="emailInput" type="text" readonly />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">⬅ Volver al listado</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

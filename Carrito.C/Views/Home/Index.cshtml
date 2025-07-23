@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .header-con-imagen {
+        background-image: url('/images/mujer-de-compras.webp');
+        background-size: cover;
+        background-position: right;
+        height: 400px; /* Ajustá según lo que quieras mostrar */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contenedor-texto {
+        background-color: rgba(0, 0, 0, 0.50);
+        padding: 2rem;
+        border-radius: 1rem;
+        text-align: center;
+        color: white;
+    }
+
+    .contenedor-imagen {
+        flex: 1;
+        height: 100%;
+        background-image: url('/images/mujer-de-compras.webp');
+        background-size: cover;
+        background-position: center;
+        border-radius: 1rem;
+    }
+
+</style>
+
+<div class="header-con-imagen">
+    <div class="contenedor-texto">
+        <h1 class="display-4">Carrito de Compras</h1>
+        <p class="lead">Bienvenido a tu carrito de compras online.</p>
+    </div>
+    <div class="contenedor-imagen"></div>
+</div>
+
+@if (ViewBag.Mensaje is not null)
+{
+    <div class="text-center mt-3">
+        <p>@ViewBag.Mensaje</p>
+    </div>
+}

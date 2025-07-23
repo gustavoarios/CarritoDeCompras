@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Confirmar Compra";
+    var sucursales = ViewBag.Sucursales as SelectList;
+    bool haySucursales = sucursales != null && sucursales.Any();
+    var clienteId = Context.Request.Query["clienteId"].ToString(); // captura para botón cancelar
+}
+
+<h2>Confirmar Compra</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        ⚠ @ViewBag.Error
+    </div>
+}
+
+@if (ViewBag.StockDisponiblePorProducto != null)
+{
+    <div class="alert alert-info">
+        <strong>Stock disponible en la sucursal seleccionada:</strong>
+        <ul>
+            @foreach (var kvp in (Dictionary<string, int>)ViewBag.StockDisponiblePorProducto)
+            {
+                <li>@kvp.Key: @kvp.Value unidades disponibles</li>
+            }
+        </ul>
+    </div>
+}
+
+@if (haySucursales)
+{
+    <form asp-action="Comprar" method="post">
+        @if (User.IsInRole("EmpleadoRol"))
+        {
+            <div class="mb-3">
+                <label for="clienteId" class="form-label">Cliente</label>
+                <select id="clienteId" name="clienteId" class="form-select" asp-items="ViewBag.Clientes" required>
+                    <option value="">Seleccione un cliente...</option>
+                </select>
+            </div>
+        }
+
+        <div class="mb-3">
+            <label for="SucursalId" class="form-label">Seleccioná la sucursal:</label>
+            <select id="SucursalId" name="SucursalId" class="form-select" asp-items="ViewBag.Sucursales" required>
+                <option value="">-- Seleccionar --</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">✅ Confirmar compra</button>
+        <a asp-controller="CarritoItems" asp-action="Index" asp-route-clienteId="@clienteId" class="btn btn-secondary">Cancelar</a>
+    </form>
+}
+else
+{
+    <div class="alert alert-warning mt-4">
+        ⚠ No hay ninguna sucursal disponible que tenga stock suficiente para tu pedido actual.
+    </div>
+    <a asp-controller="CarritoItems" asp-action="Index" asp-route-clienteId="@clienteId" class="btn btn-secondary mt-3">Volver al carrito</a>
+}

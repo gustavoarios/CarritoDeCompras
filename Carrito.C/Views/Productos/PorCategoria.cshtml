@@ -1,0 +1,35 @@
+﻿@model List<IGrouping<string, CarritoC.Models.Producto>>
+
+@{
+    ViewData["Title"] = "Productos por Categoría";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@foreach (var grupo in Model)
+{
+  
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in grupo)
+            {
+                <tr>
+                    <td>@producto.Nombre</td>
+                    <td>@producto.Descripcion</td>
+                    <td>$@producto.PrecioVigente</td>
+                    <td>
+                        <img src="~/img/@producto.Imagen" alt="Imagen" style="width: 100px;" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

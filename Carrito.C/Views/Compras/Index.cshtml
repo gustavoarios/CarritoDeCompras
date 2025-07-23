@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CarritoC.Models.Compra>
+
+@{
+    ViewData["Title"] = "Compras";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Historial de Compras</h2>
+
+    @if (User.IsInRole("EmpleadoRol"))
+    {
+        <form method="get" class="mb-3">
+            <div class="row g-2 align-items-center">
+                <div class="col-auto">
+                    <label for="clienteId" class="col-form-label">Filtrar por cliente:</label>
+                </div>
+                <div class="col-auto">
+                    @Html.DropDownList("clienteId", ViewBag.Clientes as SelectList, "-- Todos --", new { @class = "form-select" })
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">🔍 Filtrar</button>
+                </div>
+            </div>
+        </form>
+    }
+
+    <p class="d-flex gap-2">
+        @if (User.IsInRole("EmpleadoRol"))
+        {
+            <a asp-controller="Compras" asp-action="ComprasDelMes" class="btn btn-outline-primary">
+                📆 Ver Compras del Mes
+            </a>
+        }
+    </p>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Sucursal</th>
+                @if (User.IsInRole("EmpleadoRol"))
+                {
+                    <th>Cliente</th>
+                }
+                <th>ID Compra</th>
+                <th>Productos</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>$@item.Total.ToString("N2")</td>
+                    <td>@item.Sucursal.Nombre</td>
+                    @if (User.IsInRole("EmpleadoRol"))
+                    {
+                        <td>@item.Cliente.Apellido, @item.Cliente.Nombre</td>
+                    }
+                    <td>#@item.Id</td>
+                    <td>
+                        <ul class="mb-0">
+                            @foreach (var itemCompra in item.Carrito.CarritoItems)
+                            {
+                                <li>@itemCompra.Producto.Nombre (@itemCompra.Cantidad)</li>
+                            }
+                        </ul>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">🔍 Ver</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

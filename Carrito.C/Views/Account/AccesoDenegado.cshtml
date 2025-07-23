@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Acceso Denegado";
+    var returnUrl = Context.Request.Headers["Referer"].ToString(); // Página previa
+}
+
+<div class="container mt-5 text-center">
+    <h2 class="text-danger">🚫 Acceso denegado</h2>
+    <p class="lead">No tenés acceso permitido a esta sección.</p>
+
+    @if (!string.IsNullOrEmpty(returnUrl))
+    {
+        <a href="@returnUrl" class="btn btn-secondary mt-3">⬅️ Volver</a>
+    }
+    else
+    {
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary mt-3">⬅️ Volver al inicio</a>
+    }
+</div>

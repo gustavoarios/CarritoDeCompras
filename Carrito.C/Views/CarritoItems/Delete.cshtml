@@ -1,0 +1,50 @@
+﻿@model CarritoC.Models.CarritoItem
+
+@{
+    ViewData["Title"] = "Eliminar Ítem del Carrito";
+}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-trash3-fill me-2"></i>Confirmar Eliminación</h4>
+                </div>
+
+                <div class="card-body">
+                    <p class="lead text-danger">¿Estás seguro que querés eliminar este ítem del carrito?</p>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Carrito ID</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Carrito.Id)</dd>
+
+                        <dt class="col-sm-4">Producto</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Producto.Descripcion)</dd>
+
+                        <dt class="col-sm-4">Valor Unitario</dt>
+                        <dd class="col-sm-8">$@Html.DisplayFor(model => model.ValorUnitario)</dd>
+
+                        <dt class="col-sm-4">Cantidad</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Cantidad)</dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="CarritoId" />
+                        <input type="hidden" asp-for="ProductoId" />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash3-fill"></i> Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

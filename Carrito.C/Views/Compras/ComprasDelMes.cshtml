@@ -1,0 +1,30 @@
+﻿@model IEnumerable<CarritoC.Models.Compra>
+
+@{
+    ViewData["Title"] = "Compras del Mes";
+}
+
+<h2 class="mb-4 text-primary">🧾 Compras del Mes</h2>
+<h5 class ="mb-4 text-secondary">Orden descendiente segun valor de compra</h5>
+
+<table class="table table-striped table-bordered shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>📅 Fecha</th>
+            <th>👤 Cliente</th>
+            <th>💰 Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var compra in Model)
+        {
+            <tr>
+                <td>@compra.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@($"{compra.Cliente.Apellido}, {compra.Cliente.Nombre}")</td>
+                <td>$@compra.Total.ToString("F2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">🔙 Volver</a>

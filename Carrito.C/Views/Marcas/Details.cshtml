@@ -1,0 +1,26 @@
+﻿@model CarritoC.Models.Marca
+
+@{
+    ViewData["Title"] = "Detalle de Marca";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-primary mb-4">🏷️ Detalle de Marca</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-4 text-muted">📝 Nombre</dt>
+                <dd class="col-sm-8">@Model.Nombre</dd>
+
+                <dt class="col-sm-4 text-muted">📄 Descripción</dt>
+                <dd class="col-sm-8">@Model.Descripcion</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        
+        <a asp-action="Index" class="btn btn-outline-secondary">🔙 Volver al Listado</a>
+    </div>
+</div>

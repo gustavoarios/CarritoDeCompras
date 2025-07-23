@@ -1,0 +1,53 @@
+﻿@model CarritoC.Models.Cliente
+
+@{
+    ViewData["Title"] = "Perfil del Cliente";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0">👤 Perfil de @Model.Nombre @Model.Apellido</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row fs-5">
+                        <dt class="col-sm-4 text-muted">👥 Usuario</dt>
+                        <dd class="col-sm-8">@Model.UserName</dd>
+
+                        <dt class="col-sm-4 text-muted">📛 Nombre</dt>
+                        <dd class="col-sm-8">@Model.Nombre</dd>
+
+                        <dt class="col-sm-4 text-muted">👪 Apellido</dt>
+                        <dd class="col-sm-8">@Model.Apellido</dd>
+
+                        <dt class="col-sm-4 text-muted">🆔 DNI</dt>
+                        <dd class="col-sm-8">@Model.DNI</dd>
+
+                        <dt class="col-sm-4 text-muted">📞 Teléfono</dt>
+                        <dd class="col-sm-8">@Model.Telefono</dd>
+
+                        <dt class="col-sm-4 text-muted">🏠 Dirección</dt>
+                        <dd class="col-sm-8">@Model.Direccion</dd>
+
+                        <dt class="col-sm-4 text-muted">📧 Email</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4 text-muted">📅 Fecha de Alta</dt>
+                        <dd class="col-sm-8">@Model.FechaAlta.ToString("yyyy-MM-dd HH:mm")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">
+                    ✏️ Editar Perfil
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                    🏠 Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

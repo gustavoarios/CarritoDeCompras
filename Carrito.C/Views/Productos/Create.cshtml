@@ -1,0 +1,114 @@
+﻿@model CarritoC.Models.Producto
+
+@{
+    ViewData["Title"] = "Crear Producto";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-box-seam me-2"></i>
+                    <h4 class="mb-0">Nuevo Producto</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Mensaje != null)
+                    {
+                    <div class="alert alert-success">
+                        ✅ @ViewBag.Mensaje
+                    </div>
+                    }
+
+                    <form asp-action="Create" method="post">
+                        @* Mantener el parámetro retorno si viene en la query para posibles usos *@
+                        <input type="hidden" name="retorno" value="@(ViewData["Retorno"] ?? "")" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Marca -->
+                        <div class="mb-3 d-flex align-items-center">
+                            <label asp-for="MarcaId" class="form-label me-2">
+                                <i class="bi bi-patch-check"></i> Marca
+                            </label>
+                            <select asp-for="MarcaId" class="form-select me-2" asp-items="ViewBag.MarcaId" style="width: auto;"></select>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Marcas" asp-action="Create" asp-route-retorno="ProductosCreate">
+                                ➕ Nueva
+                            </a>
+                        </div>
+
+                        <!-- Categoría -->
+                        <div class="mb-3 d-flex align-items-center">
+                            <label asp-for="CategoriaId" class="form-label me-2">
+                                <i class="bi bi-tags"></i> Categoría
+                            </label>
+                            <select asp-for="CategoriaId" class="form-select me-2" asp-items="ViewBag.CategoriaId" style="width: auto;"></select>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Categorias" asp-action="Create" asp-route-retorno="ProductosCreate">
+                                ➕ Nueva
+                            </a>
+                        </div>
+
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">
+                                <i class="bi bi-type"></i> Nombre
+                            </label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Nombre del producto" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label">
+                                <i class="bi bi-card-text"></i> Descripción
+                            </label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Descripción del producto..."></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="mb-3">
+                            <label asp-for="PrecioVigente" class="form-label">
+                                <i class="bi bi-currency-dollar"></i> Precio Vigente
+                            </label>
+                            <input asp-for="PrecioVigente" class="form-control" type="number" step="0.01" placeholder="Ej: 1599.99" />
+                            <span asp-validation-for="PrecioVigente" class="text-danger"></span>
+                        </div>
+
+                        <!-- Imagen -->
+                        <div class="mb-3">
+                            <label asp-for="Imagen" class="form-label">
+                                <i class="bi bi-image"></i> URL Imagen
+                            </label>
+                            <input asp-for="Imagen" class="form-control" placeholder="URL de la imagen del producto" />
+                            <span asp-validation-for="Imagen" class="text-danger"></span>
+                        </div>
+
+                        <!-- Activo -->
+                        <div class="mb-3 form-check">
+                            <input asp-for="Activo" class="form-check-input" type="checkbox" id="activoCheck" />
+                            <label class="form-check-label" for="activoCheck">✔ Producto Activo</label>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Crear Producto
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+   
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

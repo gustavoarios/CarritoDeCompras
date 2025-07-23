@@ -1,0 +1,103 @@
+﻿@model CarritoC.Models.Cliente
+
+@{
+    ViewData["Title"] = "Editar Perfil";
+    bool esEmpleado = User.IsInRole("EmpleadoRol") || User.IsInRole("AdministradorRol");
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0">👤 Editar Perfil</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="FechaAlta" />
+                        <input type="hidden" asp-for="IdentificacionUnica" />
+                        <input type="hidden" asp-for="UserName" />
+                        <input type="hidden" asp-for="Nombre" />
+                        <input type="hidden" asp-for="Apellido" />
+                        <input type="hidden" asp-for="DNI" />
+                        <input type="hidden" asp-for="Email" />
+
+                        <!-- Usuario -->
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">👥 Usuario</label>
+                            <input class="form-control" value="@Model.UserName" readonly />
+                        </div>
+
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">🧾 Nombre</label>
+                            <input class="form-control" value="@Model.Nombre" readonly />
+                        </div>
+
+                        <!-- Apellido -->
+                        <div class="mb-3">
+                            <label asp-for="Apellido" class="form-label">🧾 Apellido</label>
+                            <input class="form-control" value="@Model.Apellido" readonly />
+                        </div>
+
+                        <!-- DNI -->
+                        <div class="mb-3">
+                            <label asp-for="DNI" class="form-label">🆔 DNI</label>
+                            <input class="form-control" value="@Model.DNI" readonly />
+                        </div>
+
+                        <!-- CUIT/CUIL -->
+                        <div class="mb-3">
+                            <label asp-for="IdentificacionUnica" class="form-label">🧾 CUIT/CUIL</label>
+                            <input class="form-control" value="@Model.IdentificacionUnica" readonly />
+                        </div>
+
+                        <!-- Teléfono editable -->
+                        <div class="mb-3">
+                            <label asp-for="Telefono" class="form-label">📞 Teléfono</label>
+                            <input asp-for="Telefono" class="form-control" />
+                            <span asp-validation-for="Telefono" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Dirección editable -->
+                        <div class="mb-3">
+                            <label asp-for="Direccion" class="form-label">🏠 Dirección</label>
+                            <input asp-for="Direccion" class="form-control" />
+                            <span asp-validation-for="Direccion" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Fecha de Alta visible -->
+                        <div class="mb-3">
+                            <label class="form-label">📅 Fecha de Alta</label>
+                            <div class="form-control bg-light">
+                                @Model.FechaAlta.ToString("yyyy-MM-dd HH:mm")
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">📧 Email</label>
+                            <input class="form-control" value="@Model.Email" readonly />
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                🔙 Volver al Inicio
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                💾 Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

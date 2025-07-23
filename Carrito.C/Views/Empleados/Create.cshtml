@@ -1,0 +1,135 @@
+﻿@model CarritoC.Models.Empleado
+
+@{
+    ViewData["Title"] = "Crear Empleado";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-person-badge-fill me-2"></i>
+                    <h4 class="mb-0">Nuevo Empleado</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    
+
+                        @if (Model?.Legajo != null)
+                        {
+                            <div class="mb-3">
+                                <label asp-for="Legajo" class="form-label">
+                                    <i class="bi bi-hash"></i> Legajo generado
+                                </label>
+                                <input asp-for="Legajo" class="form-control" readonly />
+                                <input type="hidden" asp-for="Legajo" />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">
+                                <i class="bi bi-person-circle"></i> Nombre de Usuario
+                            </label>
+                            <input asp-for="UserName" class="form-control" placeholder="usuario@correo.com" id="UserName" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Nombre" class="form-label">
+                                    <i class="bi bi-person-fill"></i> Nombre
+                                </label>
+                                <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Apellido" class="form-label">
+                                    <i class="bi bi-person-fill"></i> Apellido
+                                </label>
+                                <input asp-for="Apellido" class="form-control" placeholder="Apellido" />
+                                <span asp-validation-for="Apellido" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DNI" class="form-label">
+                                    <i class="bi bi-credit-card-2-front-fill"></i> DNI
+                                </label>
+                                <input asp-for="DNI" class="form-control" placeholder="Sin puntos ni espacios" />
+                                <span asp-validation-for="DNI" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Telefono" class="form-label">
+                                    <i class="bi bi-telephone-fill"></i> Teléfono
+                                </label>
+                                <input asp-for="Telefono" class="form-control" placeholder="Ej: 1123456789" />
+                                <span asp-validation-for="Telefono" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Direccion" class="form-label">
+                                <i class="bi bi-geo-alt-fill"></i> Dirección
+                            </label>
+                            <input asp-for="Direccion" class="form-control" placeholder="Calle y número" />
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">
+                                <i class="bi bi-envelope-fill"></i> Email
+                            </label>
+                            <input asp-for="Email" class="form-control" placeholder="correo@ejemplo.com" id="Email" readonly />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Crear Empleado
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+   <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userNameInput = document.getElementById("UserName");
+            const emailInput = document.getElementById("Email");
+            const form = document.querySelector("form");
+
+            // Cuando el usuario escribe el UserName, actualiza automáticamente el Email
+            userNameInput?.addEventListener("input", function () {
+                emailInput.value = userNameInput.value;
+            });
+
+            // Validación al enviar el formulario
+            form?.addEventListener("submit", function (e) {
+                if (userNameInput.value !== emailInput.value) {
+                    e.preventDefault();
+
+                    const errorSpan = document.querySelector("[data-valmsg-for='Email']");
+                    if (errorSpan) {
+                        errorSpan.textContent = "El Email debe coincidir con el Nombre de Usuario.";
+                    }
+                    emailInput.classList.add("is-invalid");
+                }
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

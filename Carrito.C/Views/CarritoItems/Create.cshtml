@@ -1,0 +1,83 @@
+﻿@model CarritoC.Models.CarritoItem
+
+@{
+    ViewData["Title"] = "Crear ítem del carrito";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="bi bi-cart-plus me-2"></i>
+                    <h4 class="mb-0">Agregar Producto al Carrito</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" novalidate>
+                        @if (User.IsInRole("EmpleadoRol"))
+                        {
+                            <input type="hidden" name="clienteId" value="@ViewBag.ClienteSeleccionado" />
+                        }
+
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        @if (User.IsInRole("EmpleadoRol"))
+                        {
+                            <div class="mb-3">
+                                <label for="clienteId" class="form-label">
+                                    <i class="bi bi-person"></i> Cliente
+                                </label>
+                                @Html.DropDownList(
+                                         "clienteId",
+                                         (SelectList)ViewBag.Clientes,
+                                         "Seleccione un cliente",
+                                         new { @class = "form-select", required = "required" })
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label asp-for="Cantidad" class="form-label">
+                                <i class="bi bi-hash"></i> Cantidad
+                            </label>
+                            <input asp-for="Cantidad" class="form-control" type="number" placeholder="Ingrese la cantidad" value="@(Model?.Cantidad ?? 1)" />
+                            <span asp-validation-for="Cantidad" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProductoId" class="form-label">
+                                <i class="bi bi-box"></i> Producto
+                            </label>
+
+                            @if ((bool)(ViewBag.BloquearProducto ?? false))
+                            {
+                                <input type="hidden" asp-for="ProductoId" />
+                                <input type="text" class="form-control" value="@(((SelectList)ViewBag.ProductoId).FirstOrDefault()?.Text)" disabled />
+                            }
+                            else
+                            {
+                                <select asp-for="ProductoId" class="form-select" asp-items="ViewBag.ProductoId">
+                                    <option value="">Seleccione un producto</option>
+                                </select>
+                            }
+
+                            <span asp-validation-for="ProductoId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver al listado
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Confirmar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

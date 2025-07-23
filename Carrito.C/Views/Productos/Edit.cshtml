@@ -1,0 +1,97 @@
+﻿@model CarritoC.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0">🛠️ Editar Producto</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">🏷️ Nombre</label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label">📝 Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="mb-3">
+                            <label asp-for="PrecioVigente" class="form-label">💰 Precio Vigente</label>
+                            <input asp-for="PrecioVigente" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="PrecioVigente" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Imagen (editable) -->
+                        <div class="mb-3">
+                            <label asp-for="Imagen" class="form-label">🖼️ URL Imagen</label>
+                            <input asp-for="Imagen" class="form-control" placeholder="URL de la imagen del producto" />
+                            <span asp-validation-for="Imagen" class="text-danger small"></span>
+
+                            @if (!string.IsNullOrEmpty(Model.Imagen))
+                            {
+                                <div class="mt-2">
+                                    <img src="@Model.Imagen" alt="Imagen del producto" class="img-fluid rounded shadow-sm" style="max-height: 200px;" />
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Activo -->
+                        <div class="mb-3 form-check">
+                            <input asp-for="Activo" class="form-check-input" type="checkbox" id="activoCheck" />
+                            <label class="form-check-label" for="activoCheck">✔ Producto Activo</label>
+                        </div>
+
+                        <!-- Marca -->
+                        <div class="mb-3">
+                            <label asp-for="MarcaId" class="form-label">🏢 Marca</label>
+                            <select asp-for="MarcaId" class="form-select" asp-items="ViewBag.MarcaId"></select>
+                            <span asp-validation-for="MarcaId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Categoría -->
+                        <div class="mb-3">
+                            <label asp-for="CategoriaId" class="form-label">📂 Categoría</label>
+                            <select asp-for="CategoriaId" class="form-select" asp-items="ViewBag.CategoriaId"></select>
+                            <span asp-validation-for="CategoriaId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                🔙 Volver al Listado
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                💾 Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

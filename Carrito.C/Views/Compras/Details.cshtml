@@ -1,0 +1,34 @@
+﻿@model CarritoC.Models.Compra
+
+@{
+    ViewData["Title"] = "Detalle de Compra";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-success mb-4">🛒 Detalle de la Compra</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-4 text-muted">👤 Cliente</dt>
+                <dd class="col-sm-8">@Model.Cliente.Apellido</dd>
+
+                <dt class="col-sm-4 text-muted">📅 Fecha de Compra</dt>
+                <dd class="col-sm-8">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-4 text-muted">💰 Total</dt>
+                <dd class="col-sm-8">@Model.Total.ToString("C")</dd>
+
+                <dt class="col-sm-4 text-muted">🏬 Sucursal</dt>
+                <dd class="col-sm-8">@Model.Sucursal.Nombre</dd>
+
+                <dt class="col-sm-4 text-muted">🧺 ID Compra</dt>
+                <dd class="col-sm-8">@Model.Carrito.Id</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-outline-secondary">🔙 Volver al listado</a>
+    </div>
+</div>

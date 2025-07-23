@@ -1,0 +1,29 @@
+﻿@model CarritoC.Models.StockItem
+
+@{
+    ViewData["Title"] = "Detalle de Stock";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary fw-bold mb-3">📦 Detalle del Stock</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-3 text-muted">🏢 Sucursal</dt>
+                <dd class="col-sm-9">@Model.Sucursal?.Nombre</dd>
+
+                <dt class="col-sm-3 text-muted">🛒 Producto</dt>
+                <dd class="col-sm-9">@Model.Producto?.Descripcion</dd>
+
+                <dt class="col-sm-3 text-muted">📊 Cantidad en stock</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Cantidad)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        @Html.ActionLink("✏️ Editar", "Edit", new { sucursalId = Model.SucursalId, productoId = Model.ProductoId }, new { @class = "btn btn-outline-primary me-2" })
+        <a asp-action="Index" class="btn btn-secondary">🔙 Volver al listado</a>
+    </div>
+</div>

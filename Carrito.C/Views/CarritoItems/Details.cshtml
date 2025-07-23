@@ -1,0 +1,41 @@
+﻿@model CarritoC.Models.CarritoItem
+
+@{
+    ViewData["Title"] = "Detalle del Item del Carrito";
+    var subtotal = Model.Cantidad * Model.ValorUnitario;
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 fw-bold text-primary">🛍️ Detalle del Producto en Carrito</h2>
+
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-4 text-muted">🛒 ID de Carrito</dt>
+                <dd class="col-sm-8">@Model.Carrito.Id</dd>
+
+                <dt class="col-sm-4 text-muted">📦 Producto</dt>
+                <dd class="col-sm-8">@Model.Producto.Descripcion</dd>
+
+                <dt class="col-sm-4 text-muted">💲 Precio Unitario</dt>
+                <dd class="col-sm-8">@string.Format("${0:N2}", Model.ValorUnitario)</dd>
+
+                <dt class="col-sm-4 text-muted">🔢 Cantidad</dt>
+                <dd class="col-sm-8">@Model.Cantidad</dd>
+
+                <dt class="col-sm-4 text-muted">🧮 Subtotal</dt>
+                <dd class="col-sm-8 text-success fw-semibold">@string.Format("${0:N2}", subtotal)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-carritoId="@Model.CarritoId" asp-route-productoId="@Model.ProductoId" class="btn btn-outline-primary me-2">
+            ✏️ Editar
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+
+            🔙 Volver a la Lista
+        </a>
+    </div>
+</div>

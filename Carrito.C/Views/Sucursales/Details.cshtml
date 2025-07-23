@@ -1,0 +1,69 @@
+﻿@model CarritoC.Models.Sucursal
+
+@{
+    ViewData["Title"] = "Detalle de Sucursal";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary fw-bold mb-3">🏬 Detalle de Sucursal</h2>
+
+    @if (!Model.Activa)
+    {
+        <div class="alert alert-warning d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div><strong>Atención:</strong> Esta sucursal está deshabilitada.</div>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-3 text-muted">📍 Nombre</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3 text-muted">🏠 Dirección</dt>
+                <dd class="col-sm-9">@Model.Direccion</dd>
+
+                <dt class="col-sm-3 text-muted">📞 Teléfono</dt>
+                <dd class="col-sm-9">@Model.Telefono</dd>
+
+                <dt class="col-sm-3 text-muted">📧 Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                @if (User.IsInRole("EmpleadoRol")) { 
+                <dt class="col-sm-3 text-muted">⚙️ Estado</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Activa)
+                    {
+                        <span class="badge bg-success">Activa</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Deshabilitada</span>
+                    }
+
+					</dd>
+				}
+            </dl>
+        </div>
+    </div>
+
+	<div class="mt-4">
+		<a asp-action="Index" class="btn btn-secondary me-2">🔙 Volver al listado</a>
+
+        @if (User.IsInRole("EmpleadoRol")) 
+        {
+        
+
+        if (!Model.Activa)
+        {
+            <form asp-action="Reactivate" asp-route-id="@Model.Id" method="post" class="d-inline">
+                <button type="submit" class="btn btn-success">✅ Reactivar Sucursal</button>
+            </form>
+        }
+        <a asp-action="AgregarStock" asp-route-sucursalId="@Model.Id" class="btn btn-sm btn-warning mt-3">
+            ➕ Agregar producto al stock
+			</a>
+		}
+    </div>
+</div>

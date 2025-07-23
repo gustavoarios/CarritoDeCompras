@@ -1,0 +1,135 @@
+﻿@model IEnumerable<CarritoC.Models.Producto>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📦 Productos</h2>
+
+    @if (User.IsInRole("EmpleadoRol"))
+    {
+        <div class="mb-3">
+            <a asp-action="Create" class="btn btn-success">➕ Crear nuevo producto</a>
+        </div>
+    }
+
+    <!-- Filtro por categoría -->
+    <form asp-action="Index" method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <select name="categoriaId" class="form-select">
+                <option value="">🔽 Todas las categorías</option>
+                @foreach (var categoria in (SelectList)ViewData["CategoriaId"])
+                {
+                    <option value="@categoria.Value" selected="@(categoria.Selected ? "selected" : null)">
+                        @categoria.Text
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Limpiar</a>
+        </div>
+    </form>
+
+    <!-- Grid de productos -->
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model)
+        {
+            var sucursales = ViewBag.SucursalesConStock?[item.Id];
+            bool hayStock = sucursales != null && sucursales.Count > 0;
+            bool estaActivo = item.Activo;
+
+            var estadoClass = estaActivo ? "" : "border-secondary-subtle text-muted";
+            var estiloFondo = estaActivo ? "" : "background-color: #d0d0d0; color: white;";
+            var estiloBtnVer = estaActivo ? "" : "background-color: #343a40; color: white; border-color: #343a40;";
+
+            <div class="col">
+                <div class="card h-100 shadow-sm @estadoClass" style="@estiloFondo">
+                    @if (!string.IsNullOrEmpty(item.Imagen))
+                    {
+                        <img src="~/images/@item.Imagen"
+                        class="card-img-top"
+                        style="height: 180px; object-fit: contain;"
+                        alt="Imagen de @item.Nombre" />
+                    }
+                    else
+                    {
+                        <div class="bg-secondary d-flex align-items-center justify-content-center text-white" style="height: 180px;">
+                            Sin imagen
+                        </div>
+                    }
+
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">@item.Nombre</h5>
+                        <p class="card-text fw-bold text-success mb-1">@string.Format("${0:N2}", item.PrecioVigente)</p>
+                        <p class="card-text text-muted small mb-2">@item.Marca?.Nombre</p>
+
+                        @* Mostrar sucursales con stock solo para empleados *@
+                        @if (User.IsInRole("EmpleadoRol") && sucursales != null && sucursales.Count > 0)
+                        {
+                            <div class="mt-3">
+                                <h6 class="fw-semibold mb-2">🏬 Stock por sucursal:</h6>
+                                <ul class="list-group list-group-flush small">
+                                    @foreach (var suc in sucursales)
+                                    {
+                                        <li class="list-group-item px-0 py-1 d-flex justify-content-between align-items-center bg-transparent border-0">
+                                            <span class="text-dark">@suc.Sucursal.Nombre</span>
+                                            <span class="badge bg-primary rounded-pill">@suc.Cantidad</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <div class="d-flex justify-content-between mt-auto">
+                                @if (User.IsInRole("EmpleadoRol"))
+                                {
+                                    <a asp-action="Details"
+                                    asp-route-id="@item.Id"
+                                    class="btn btn-sm btn-outline-info"
+                                    style="@estiloBtnVer">
+                                        🔍 Ver
+                                    </a>
+                                    <a asp-action="Edit"
+                                    asp-route-id="@item.Id"
+                                    class="btn btn-sm btn-outline-primary">
+                                        ✏ Editar
+                                    </a>
+                                }
+
+                                @if (User.IsInRole("ClienteRol"))
+                                {
+                                    if (estaActivo && hayStock)
+                                    {
+                                        <a asp-controller="CarritoItems"
+                                        asp-action="Create"
+                                        asp-route-productoId="@item.Id"
+                                        class="btn btn-sm btn-success"
+                                        title="Agregar al carrito">
+                                            🛒 Agregar
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger small align-self-center">🚫 Sin stock</span>
+                                    }
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-info ms-2"
+                                       style="@estiloBtnVer">
+                                        🔍 Ver
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

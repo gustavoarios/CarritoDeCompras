@@ -1,0 +1,47 @@
+﻿@model CarritoC.Models.Empleado
+
+@{
+    ViewData["Title"] = "Detalle del Empleado";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-primary mb-4">🧑‍💼 Detalle del Empleado</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-4 text-muted">🔢 Legajo</dt>
+                <dd class="col-sm-8">@Model.Legajo</dd>
+
+                <dt class="col-sm-4 text-muted">👤 Usuario</dt>
+                <dd class="col-sm-8">@Model.UserName</dd>
+
+                <dt class="col-sm-4 text-muted">📛 Nombre</dt>
+                <dd class="col-sm-8">@Model.Nombre</dd>
+
+                <dt class="col-sm-4 text-muted">👪 Apellido</dt>
+                <dd class="col-sm-8">@Model.Apellido</dd>
+
+                <dt class="col-sm-4 text-muted">🆔 DNI</dt>
+                <dd class="col-sm-8">@Model.DNI</dd>
+
+                <dt class="col-sm-4 text-muted">📞 Teléfono</dt>
+                <dd class="col-sm-8">@Model.Telefono</dd>
+
+                <dt class="col-sm-4 text-muted">🏠 Dirección</dt>
+                <dd class="col-sm-8">@Model.Direccion</dd>
+
+                <dt class="col-sm-4 text-muted">📅 Fecha de Alta</dt>
+                <dd class="col-sm-8">@Model.FechaAlta.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-4 text-muted">📧 Email</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary me-2">✏️ Editar</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">🔙 Volver al Listado</a>
+    </div>
+</div>

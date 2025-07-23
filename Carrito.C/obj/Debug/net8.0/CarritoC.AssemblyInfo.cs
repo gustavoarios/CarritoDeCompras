@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CarritoC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46d2ffab98969cdcd113aa5d46e2c648d6fe83fe")]
 [assembly: System.Reflection.AssemblyProductAttribute("CarritoC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CarritoC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

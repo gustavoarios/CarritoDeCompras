@@ -99,7 +99,7 @@ namespace CarritoC.Controllers
             }
 
 
-            var stockPorSucursal = await _context.StockItems
+            var stockPorSucursal = await _context.StockItem
             .Where(si => si.ProductoId == producto.Id && si.Cantidad > 0)
             .Include(si => si.Sucursal)
             .ToListAsync();
